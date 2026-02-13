@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Снегопад на ЕГЭ — Инфографика</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #0a0e27 0%, #1a1040 30%, #2d1b69 60%, #1a1040 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Snow animation */
+        .snowfall-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 1em;
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header .logo .dot {
+            width: 8px; height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, #a8b4ff 50%, #7c6ef0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 400;
+        }
+
+        .period-badge {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, rgba(124,110,240,0.3), rgba(168,180,255,0.1));
+            border: 1px solid rgba(124,110,240,0.4);
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #c4b5fd;
+            letter-spacing: 0.5px;
+        }
+
+        /* Big number */
+        .big-result {
+            text-align: center;
+            margin: 50px 0;
+            padding: 50px 20px;
+            background: radial-gradient(ellipse at center, rgba(124,110,240,0.15) 0%, transparent 70%);
+            position: relative;
+        }
+
+        .big-result::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(124,110,240,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .big-number {
+            font-size: 96px;
+            font-weight: 900;
+            position: relative;
+            background: linear-gradient(135deg, #fff 20%, #a78bfa 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .big-number .unit {
+            font-size: 40px;
+            font-weight: 700;
+        }
+
+        .big-label {
+            font-size: 20px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 12px;
+            position: relative;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        /* Pipeline / flow */
+        .flow-section {
+            margin: 60px 0;
+        }
+
+        .flow-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.3);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .flow-steps {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            position: relative;
+        }
+
+        .flow-step {
+            flex: 1;
+            padding: 24px 16px;
+            text-align: center;
+            position: relative;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .flow-step:first-child {
+            border-radius: 16px 0 0 16px;
+        }
+
+        .flow-step:last-child {
+            border-radius: 0 16px 16px 0;
+        }
+
+        .flow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(180deg, transparent, rgba(124,110,240,0.5), transparent);
+        }
+
+        .flow-step .step-num {
+            font-size: 28px;
+            font-weight: 900;
+            color: #7c6ef0;
+            line-height: 1;
+        }
+
+        .flow-step .step-op {
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            margin: 6px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .flow-step .step-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.3;
+        }
+
+        /* Equation bar */
+        .equation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 40px 0;
+            padding: 24px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            flex-wrap: wrap;
+        }
+
+        .eq-part {
+            text-align: center;
+        }
+
+        .eq-part .val {
+            font-size: 22px;
+            font-weight: 800;
+            color: #c4b5fd;
+        }
+
+        .eq-part .desc {
+            font-size: 10px;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .eq-op {
+            font-size: 24px;
+            color: rgba(255,255,255,0.25);
+            font-weight: 300;
+        }
+
+        /* Comparison section */
+        .comparisons {
+            margin: 60px 0;
+        }
+
+        .comparisons h2 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.3);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .comp-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .comp-icon {
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+
+        .comp-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.5;
+        }
+
+        .comp-text strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.25);
+            line-height: 1.6;
+        }
+
+        .footer .disclaimer {
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .header h1 { font-size: 32px; }
+            .big-number { font-size: 56px; }
+            .big-number .unit { font-size: 24px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .flow-steps { flex-direction: column; gap: 8px; }
+            .flow-step { border-radius: 12px !important; }
+            .flow-step:not(:last-child)::after { display: none; }
+            .comparison-cards { grid-template-columns: 1fr; }
+            .equation { flex-direction: column; gap: 8px; }
+        }
+
+        /* Animated counter */
+        .counter { display: inline-block; }
+    </style>
+</head>
+<body>
+
+<div class="snowfall-bg" id="snowfall"></div>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">
+            <div class="dot"></div>
+            Яндекс Учебник — ЕГЭ по информатике
+        </div>
+        <h1>Сколько снега<br>выпало на платформе?</h1>
+        <p class="subtitle">Подсчёт виртуальных снежинок зимней анимации</p>
+        <div class="period-badge">01 декабря 2025 — 13 февраля 2026 &nbsp;·&nbsp; 75 дней</div>
+    </div>
+
+    <!-- Big Result -->
+    <div class="big-result">
+        <div class="big-number">
+            <span class="counter" data-target="2700000000">0</span>
+        </div>
+        <div class="big-number"><span class="unit">снежинок</span></div>
+        <p class="big-label">выпало за всё время на всех экранах</p>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">❄️</div>
+            <div class="stat-value">30</div>
+            <div class="stat-label">снежинок на экране<br>одновременно</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏱</div>
+            <div class="stat-value">8 сек</div>
+            <div class="stat-label">время падения<br>одной снежинки</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-value">3.75</div>
+            <div class="stat-label">снежинок в секунду<br>на одного пользователя</div>
+        </div>
+    </div>
+
+    <!-- Flow -->
+    <div class="flow-section">
+        <div class="flow-title">Формула расчёта</div>
+        <div class="flow-steps">
+            <div class="flow-step">
+                <div class="step-num">3.75</div>
+                <div class="step-op">сн/сек</div>
+                <div class="step-desc">Интенсивность<br>снегопада</div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">480</div>
+                <div class="step-op">секунд</div>
+                <div class="step-desc">Средняя<br>сессия (8 мин)</div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">100K</div>
+                <div class="step-op">человек</div>
+                <div class="step-desc">Пользователей<br>за период</div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">15</div>
+                <div class="step-op">визитов</div>
+                <div class="step-desc">На одного<br>пользователя</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Equation -->
+    <div class="equation">
+        <div class="eq-part">
+            <div class="val">3.75</div>
+            <div class="desc">сн/сек</div>
+        </div>
+        <div class="eq-op">×</div>
+        <div class="eq-part">
+            <div class="val">480</div>
+            <div class="desc">сек/сессия</div>
+        </div>
+        <div class="eq-op">×</div>
+        <div class="eq-part">
+            <div class="val">100 000</div>
+            <div class="desc">пользователей</div>
+        </div>
+        <div class="eq-op">×</div>
+        <div class="eq-part">
+            <div class="val">15</div>
+            <div class="desc">визитов</div>
+        </div>
+        <div class="eq-op">=</div>
+        <div class="eq-part">
+            <div class="val" style="color: #fff; font-size: 26px;">2.7 млрд</div>
+            <div class="desc">снежинок</div>
+        </div>
+    </div>
+
+    <!-- Comparisons -->
+    <div class="comparisons">
+        <h2>Это как если бы...</h2>
+        <div class="comparison-cards">
+            <div class="comp-card">
+                <div class="comp-icon">🌍</div>
+                <div class="comp-text">Засыпало снежинками <strong>каждого третьего жителя</strong> Москвы — по 200 штук на человека</div>
+            </div>
+            <div class="comp-card">
+                <div class="comp-icon">📄</div>
+                <div class="comp-text">Если напечатать каждую снежинку — потребуется <strong>5.4 млн листов</strong> бумаги (500 на лист)</div>
+            </div>
+            <div class="comp-card">
+                <div class="comp-icon">🏔</div>
+                <div class="comp-text">Одна настоящая снежинка весит ~0.003 мг — это всего <strong>8.1 кг</strong> реального снега</div>
+            </div>
+            <div class="comp-card">
+                <div class="comp-icon">🚀</div>
+                <div class="comp-text">Со скоростью 3.75 сн/сек одному человеку пришлось бы смотреть <strong>22.8 года</strong> без перерыва</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional stats -->
+    <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="stat-card">
+            <div class="stat-icon">👨‍🎓</div>
+            <div class="stat-value">85%</div>
+            <div class="stat-label">школьников, сдающих ЕГЭ по информатике,<br>готовятся через Яндекс Учебник</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-value">1 800</div>
+            <div class="stat-label">снежинок видит каждый ученик<br>за одну сессию на платформе</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Данные на основе публичной статистики Яндекс Учебника и оценок аудитории</p>
+        <p class="disclaimer">Расчёт носит оценочный характер. Реальные данные посещаемости известны только Яндексу.</p>
+    </div>
+
+</div>
+
+<script>
+    // Snow animation
+    const snowfall = document.getElementById('snowfall');
+    function createSnowflake() {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake';
+        flake.textContent = Math.random() > 0.5 ? '•' : '·';
+        flake.style.left = Math.random() * 100 + '%';
+        flake.style.fontSize = (Math.random() * 8 + 4) + 'px';
+        flake.style.opacity = Math.random() * 0.5 + 0.2;
+        const duration = Math.random() * 6 + 6;
+        flake.style.animationDuration = duration + 's';
+        flake.style.animationDelay = Math.random() * 2 + 's';
+        snowfall.appendChild(flake);
+        setTimeout(() => flake.remove(), (duration + 2) * 1000);
+    }
+    setInterval(createSnowflake, 200);
+
+    // Animated counter
+    function animateCounter(el) {
+        const target = parseInt(el.dataset.target);
+        const duration = 2500;
+        const startTime = performance.now();
+
+        function formatNum(n) {
+            if (n >= 1e9) return (n / 1e9).toFixed(1).replace('.', ',') + ' млрд';
+            if (n >= 1e6) return (n / 1e6).toFixed(1).replace('.', ',') + ' млн';
+            return n.toLocaleString('ru-RU');
+        }
+
+        function update(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(eased * target);
+            el.textContent = formatNum(current);
+            if (progress < 1) requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    // Intersection Observer for counter
+    const counters = document.querySelectorAll('.counter');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => observer.observe(c));
+</script>
+
+</body>
+</html>
